@@ -49,7 +49,7 @@ class DynamicUri extends Uri
     {
         $uri = parent::__toString();
         $replacements = [];
-        $parameters = array_merge($this->defaults, $this->parameters);
+        $parameters = array_replace($this->defaults, $this->parameters);
         foreach ($parameters as $key => $value) {
             $replacements['{' . $key .'}'] = $value;
         }

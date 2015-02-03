@@ -19,4 +19,11 @@ class DynamicUriTest extends TestCase
         $uri->setParameters(['test' => 'other']);
         $this->assertEquals('http://www.example.com/is_other/and-test', $uri);
     }
+    
+    public function testCanOverrideWithIntegerValues()
+    {
+        $uri = new DynamicUri('www.example.com', 'http', '/is_{0}/and-{1}', '', '', null, '', null, ['0' => 'value', '1' => 'test']);
+        $uri->setParameters(['0' => 'other']);
+        $this->assertEquals('http://www.example.com/is_other/and-test', $uri);
+    }
 }
