@@ -22,7 +22,7 @@ class ExternalUriGenerator
 		$this->uris = new UriCollection();
 
 		foreach ($this->config as $key => $value) {
-			$uri= new DynamicUri($value['scheme'], $value['host'], $value['path']);
+			$uri= new DynamicUri($value['host'], $value['scheme'], $value['path']);
 			$this->uris->add($key, $uri);
 		}
 	}
