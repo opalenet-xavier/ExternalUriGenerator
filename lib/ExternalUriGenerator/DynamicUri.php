@@ -20,8 +20,7 @@ class DynamicUri extends Uri
      $user = '',
      $password = null,
      $defaults = []
-    )
-    {
+    ) {
         parent::__construct($host, $scheme, $path, $query, $fragment, $port, $user, $password);
         $this->setDefaults($defaults);
     }

@@ -27,8 +27,7 @@ class Uri
      $port = null,
      $user = '',
      $password = null
-    )
-    {
+    ) {
         $this->setScheme($scheme);
         $this->setHost($host);
         $this->setPath($path);
@@ -86,11 +85,11 @@ class Uri
             return;
         }
 
-        if(is_int($port)
+        if (is_int($port)
             && $port >= self::$validPortRange[0]
             && $port <= self::$validPortRange[1]
             && !in_array($port, self::$invalidPorts)
-        ){
+        ) {
             $this->port = $port;
         } else {
             throw new \InvalidArgumentException("Invalid port");
@@ -108,10 +107,10 @@ class Uri
 
             return;
         }
-        if(
+        if (
          false !== filter_var('http://example.com' . $path, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)
          && '/' === $path{0}
-        ){
+        ) {
             $this->path = $path;
         } else {
             throw new \InvalidArgumentException("Invalid path");
@@ -452,7 +451,7 @@ class Uri
          'password' => $this->password
         ], $configuration);
 
-        return new self (
+        return new self(
          $parameters['host'],
          $parameters['scheme'],
          $parameters['path'],

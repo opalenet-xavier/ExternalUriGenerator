@@ -149,6 +149,5 @@ class UriCollection implements \IteratorAggregate, \Countable
         foreach ($this->uris as $name => $uri) {
             $this->add($name, $uri->withScheme($scheme));
         }
-
     }
 }
