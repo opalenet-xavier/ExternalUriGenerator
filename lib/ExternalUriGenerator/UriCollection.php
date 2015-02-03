@@ -61,8 +61,8 @@ class UriCollection implements \IteratorAggregate, \Countable
     /**
      * Adds a uri.
      *
-     * @param string $name  The uri name
-     * @param Uri  $uri A Uri instance
+     * @param string $name The uri name
+     * @param Uri    $uri  A Uri instance
      *
      * @api
      */
@@ -130,7 +130,7 @@ class UriCollection implements \IteratorAggregate, \Countable
     /**
      * Sets the host pattern on all uris.
      *
-     * @param string $host      The pattern
+     * @param string $host The pattern
      */
     public function setHost($host)
     {
@@ -149,6 +149,6 @@ class UriCollection implements \IteratorAggregate, \Countable
         foreach ($this->uris as $name => $uri) {
             $this->add($name, $uri->withScheme($scheme));
         }
-        
+
     }
 }

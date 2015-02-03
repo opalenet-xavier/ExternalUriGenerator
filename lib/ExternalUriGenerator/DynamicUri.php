@@ -6,9 +6,9 @@ use Opale\ExternalUriGenerator\Uri;
 
 class DynamicUri extends Uri
 {
-	
-	private $parameters = []; 
-    private $defaults = []; 
+
+    private $parameters = [];
+    private $defaults = [];
 
     public function __construct(
      $host = '',
@@ -34,20 +34,20 @@ class DynamicUri extends Uri
         $this->defaults = $defaults;
     }
 
-	/**
-	* @param array $parameters
-	*/
-	public function setParameters($parameters)
-	{
-		$this->parameters = $parameters;
-	}
+    /**
+    * @param array $parameters
+    */
+    public function setParameters($parameters)
+    {
+        $this->parameters = $parameters;
+    }
     /**
      * Return the string representation of the URI.
      * @return string
      */
     public function __toString()
     {
-    	$uri = parent::__toString();
+        $uri = parent::__toString();
         $replacements = [];
         $parameters = array_merge($this->defaults, $this->parameters);
         foreach ($parameters as $key => $value) {

@@ -2,150 +2,148 @@
 
 namespace Opale\ExternalUriGenerator;
 
-class Uri 
+class Uri
 {
-	private static $schemes = ['http' => ['port' => 80], 'https' => ['port' => 443], '' => ['port' => null]];
-	private static $invalidPorts = [9, 15, 81, 82, 99, 100, 158, 300, 491, 531, 545, 625,
-	 631, 782, 783, 829, 843, 888, 897, 898, 904, 911, 944, 953, 973, 981, 999, 1002, 1010];
-	private static $validPortRange = [0, 1023];
-	
-    private $scheme; 
-	private $user;
-	private $password; 
-	private $host; 
-	private $port; 
-	private $path;
-	private $query; 
-    private $fragment; 
-	
-	public function __construct(
+    private static $schemes = ['http' => ['port' => 80], 'https' => ['port' => 443], '' => ['port' => null]];
+    private static $invalidPorts = [9, 15, 81, 82, 99, 100, 158, 300, 491, 531, 545, 625,
+     631, 782, 783, 829, 843, 888, 897, 898, 904, 911, 944, 953, 973, 981, 999, 1002, 1010];
+    private static $validPortRange = [0, 1023];
+
+    private $scheme;
+    private $user;
+    private $password;
+    private $host;
+    private $port;
+    private $path;
+    private $query;
+    private $fragment;
+
+    public function __construct(
      $host = '',
-	 $scheme = '',
-	 $path = '',
-	 $query = '',
-	 $fragment = '',
-	 $port = null,
-	 $user = '',
-	 $password = null
-	)
-	{
-		$this->setScheme($scheme);
-		$this->setHost($host);
-		$this->setPath($path);
-		$this->setQuery($query);
-		$this->setFragment($fragment);
-		$this->setPort($port);
+     $scheme = '',
+     $path = '',
+     $query = '',
+     $fragment = '',
+     $port = null,
+     $user = '',
+     $password = null
+    )
+    {
+        $this->setScheme($scheme);
+        $this->setHost($host);
+        $this->setPath($path);
+        $this->setQuery($query);
+        $this->setFragment($fragment);
+        $this->setPort($port);
         $this->setUserInfo($user, $password);
-	}
+    }
 
-	/**
-	* @param string $scheme
-	* @throws \InvalidArgumentException
-	*/
-	private function setScheme($scheme)
-	{
-		if(in_array($scheme, array_keys(self::$schemes))){
-			$this->scheme = $scheme;
-		}else{
-			throw new \InvalidArgumentException("Invalid scheme");
-		}
-	}
+    /**
+    * @param string $scheme
+    * @throws \InvalidArgumentException
+    */
+    private function setScheme($scheme)
+    {
+        if (in_array($scheme, array_keys(self::$schemes))) {
+            $this->scheme = $scheme;
+        } else {
+            throw new \InvalidArgumentException("Invalid scheme");
+        }
+    }
 
-	/**
-	* @param string $user
-	* @param string|null $password
-	*/
-	private function setUserInfo($user, $password=null)
-	{
-		$this->user = $user;
-		$this->password = $password;
-	}
+    /**
+    * @param string $user
+    * @param string|null $password
+    */
+    private function setUserInfo($user, $password=null)
+    {
+        $this->user = $user;
+        $this->password = $password;
+    }
 
-	/**
-	* @param string $host
-	* @throws \InvalidArgumentException
-	*/
-	private function setHost($host)
-	{
-		if('' === $host || false !== filter_var('http://' . $host, FILTER_VALIDATE_URL)){
-			$this->host = $host;
-		}else{
-			throw new \InvalidArgumentException("Invalid or unsupported host");
-		}
-	}
+    /**
+    * @param string $host
+    * @throws \InvalidArgumentException
+    */
+    private function setHost($host)
+    {
+        if ('' === $host || false !== filter_var('http://' . $host, FILTER_VALIDATE_URL)) {
+            $this->host = $host;
+        } else {
+            throw new \InvalidArgumentException("Invalid or unsupported host");
+        }
+    }
 
-	/**
-	* @param int|null $port
-	* @throws \InvalidArgumentException
-	*/
-	private function setPort($port)
-	{
-		if(null === $port)
-		{
-			$this->port = $port;
+    /**
+    * @param int|null $port
+    * @throws \InvalidArgumentException
+    */
+    private function setPort($port)
+    {
+        if (null === $port) {
+            $this->port = $port;
 
-			return;
-		}
+            return;
+        }
 
-		if(is_int($port) 
-			&& $port >= self::$validPortRange[0] 
-			&& $port <= self::$validPortRange[1]
-			&& !in_array($port, self::$invalidPorts)
-		){
-			$this->port = $port;
-		}else{
-			throw new \InvalidArgumentException("Invalid port");
-		}
-	}
+        if(is_int($port)
+            && $port >= self::$validPortRange[0]
+            && $port <= self::$validPortRange[1]
+            && !in_array($port, self::$invalidPorts)
+        ){
+            $this->port = $port;
+        } else {
+            throw new \InvalidArgumentException("Invalid port");
+        }
+    }
 
-	/**
-	* @param string $path
-	* @throws \InvalidArgumentException
-	*/
-	private function setPath($path)
-	{
-		if('' === $path){
-			$this->path = $path;
+    /**
+    * @param string $path
+    * @throws \InvalidArgumentException
+    */
+    private function setPath($path)
+    {
+        if ('' === $path) {
+            $this->path = $path;
 
-			return;
-		}
-		if(
-		 false !== filter_var('http://example.com' . $path, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)
-		 && '/' === $path{0}
-		){
-			$this->path = $path;
-		}else{
-			throw new \InvalidArgumentException("Invalid path");
-		}
-	}
+            return;
+        }
+        if(
+         false !== filter_var('http://example.com' . $path, FILTER_VALIDATE_URL, FILTER_FLAG_PATH_REQUIRED)
+         && '/' === $path{0}
+        ){
+            $this->path = $path;
+        } else {
+            throw new \InvalidArgumentException("Invalid path");
+        }
+    }
 
-	/**
-	* @param string $query
-	* @throws \InvalidArgumentException
-	*/
-	private function setQuery($query)
-	{
-		$query = ltrim($query, '?');
-		$parameters = [];
-		try{
-			parse_str($query, $parameters);
+    /**
+    * @param string $query
+    * @throws \InvalidArgumentException
+    */
+    private function setQuery($query)
+    {
+        $query = ltrim($query, '?');
+        $parameters = [];
+        try {
+            parse_str($query, $parameters);
             $this->query = $query;
-		}catch(\Exception $e){
+        } catch (\Exception $e) {
+            return new \InvalidArgumentException('Invalid query', 0, $e);
+        }
+    }
 
-			return new \InvalidArgumentException('Invalid query', 0, $e);
-		}
-	}
+    /**
+    * @param string $fragment
+    */
+    private function setFragment($fragment)
+    {
+        $fragment = ltrim($fragment, '#');
+        $this->fragment = $fragment;
+    }
 
-	/**
-	* @param string $fragment
-	*/
-	private function setFragment($fragment)
-	{
-		$fragment = ltrim($fragment, '#');
-		$this->fragment = $fragment;
-	}
-
-	 /**
+     /**
      * Retrieve the URI scheme.
      *
      * Implementations SHOULD restrict values to "http", "https", or an empty
@@ -159,7 +157,7 @@ class Uri
      */
     public function getScheme()
     {
-    	return (string) $this->getScheme;
+        return (string) $this->getScheme;
     }
 
     /**
@@ -182,17 +180,17 @@ class Uri
      */
     public function getAuthority()
     {
-    	$userInfo = $this->getUserInfo();
-    	$port = $this->getPort();
-    	$authority =  $this->getHost();
-    	if($userInfo){
-    		$authority = $userInfo . '@' . $authority;
-    	}
-    	if(null !== $port){
-    		$authority .= ':' . $port;
-    	}
+        $userInfo = $this->getUserInfo();
+        $port = $this->getPort();
+        $authority =  $this->getHost();
+        if ($userInfo) {
+            $authority = $userInfo . '@' . $authority;
+        }
+        if (null !== $port) {
+            $authority .= ':' . $port;
+        }
 
-    	return $authority;
+        return $authority;
     }
 
     /**
@@ -209,12 +207,12 @@ class Uri
      */
     public function getUserInfo()
     {
-    	$userInfo = $this->user;
-    	if(null !== $this->password){
-			$userInfo .= ':' . $this->password;
-		}
+        $userInfo = $this->user;
+        if (null !== $this->password) {
+            $userInfo .= ':' . $this->password;
+        }
 
-		return $userInfo;
+        return $userInfo;
     }
 
     /**
@@ -227,7 +225,7 @@ class Uri
      */
     public function getHost()
     {
-    	return $this->host;	
+        return $this->host;
     }
 
     /**
@@ -247,15 +245,14 @@ class Uri
      */
     public function getPort()
     {
-    	if(null !== $this->port 
-    		&& '' !== $this->scheme 
-    		&& $this->port !== self::$schemes[$this->scheme]['port']
-    	){
-    		
-    		return $this->port;
-    	}
+        if (null !== $this->port
+            && '' !== $this->scheme
+            && $this->port !== self::$schemes[$this->scheme]['port']
+        ) {
+            return $this->port;
+        }
 
-    	return null;
+        return null;
     }
 
     /**
@@ -268,7 +265,7 @@ class Uri
      */
     public function getPath()
     {
-    	return $this->path;
+        return $this->path;
     }
 
     /**
@@ -283,7 +280,7 @@ class Uri
      */
     public function getQuery()
     {
-    	return $this->query;
+        return $this->query;
     }
 
     /**
@@ -298,7 +295,7 @@ class Uri
      */
     public function getFragment()
     {
-    	return $this->fragment;
+        return $this->fragment;
     }
 
     /**
@@ -313,13 +310,13 @@ class Uri
      *
      * An empty scheme is equivalent to removing the scheme.
      *
-     * @param string $scheme The scheme to use with the new instance.
-     * @return self A new instance with the specified scheme.
+     * @param  string                    $scheme The scheme to use with the new instance.
+     * @return self                      A new instance with the specified scheme.
      * @throws \InvalidArgumentException for invalid or unsupported schemes.
      */
     public function withScheme($scheme)
     {
-    	return $this->configureNewInstance(['scheme' => $scheme]);  
+        return $this->configureNewInstance(['scheme' => $scheme]);
     }
 
     /**
@@ -332,13 +329,13 @@ class Uri
      * user; an empty string for the user is equivalent to removing user
      * information.
      *
-     * @param string $user User name to use for authority.
-     * @param null|string $password Password associated with $user.
-     * @return self A new instance with the specified user information.
+     * @param  string      $user     User name to use for authority.
+     * @param  null|string $password Password associated with $user.
+     * @return self        A new instance with the specified user information.
      */
     public function withUserInfo($user, $password = null)
     {
-    	return $this->configureNewInstance(['user' => $user, 'password' => $password]);  
+        return $this->configureNewInstance(['user' => $user, 'password' => $password]);
     }
 
     /**
@@ -349,13 +346,13 @@ class Uri
      *
      * An empty host value is equivalent to removing the host.
      *
-     * @param string $host Hostname to use with the new instance.
-     * @return self A new instance with the specified host.
+     * @param  string                    $host Hostname to use with the new instance.
+     * @return self                      A new instance with the specified host.
      * @throws \InvalidArgumentException for invalid hostnames.
      */
     public function withHost($host)
     {
-    	return $this->configureNewInstance(['host' => $host]);  
+        return $this->configureNewInstance(['host' => $host]);
     }
 
     /**
@@ -372,12 +369,12 @@ class Uri
      *
      * @param null|int $port Port to use with the new instance; a null value
      *     removes the port information.
-     * @return self A new instance with the specified port.
+     * @return self                      A new instance with the specified port.
      * @throws \InvalidArgumentException for invalid ports.
      */
     public function withPort($port)
     {
-    	return $this->configureNewInstance(['port' => $port]);  
+        return $this->configureNewInstance(['port' => $port]);
     }
 
     /**
@@ -391,13 +388,13 @@ class Uri
      *
      * An empty path value is equivalent to removing the path.
      *
-     * @param string $path The path to use with the new instance.
-     * @return self A new instance with the specified path.
+     * @param  string                    $path The path to use with the new instance.
+     * @return self                      A new instance with the specified path.
      * @throws \InvalidArgumentException for invalid paths.
      */
     public function withPath($path)
     {
-    	return $this->configureNewInstance(['path' => $path]); 
+        return $this->configureNewInstance(['path' => $path]);
     }
 
     /**
@@ -412,13 +409,13 @@ class Uri
      *
      * An empty query string value is equivalent to removing the query string.
      *
-     * @param string $query The query string to use with the new instance.
-     * @return self A new instance with the specified query string.
+     * @param  string                    $query The query string to use with the new instance.
+     * @return self                      A new instance with the specified query string.
      * @throws \InvalidArgumentException for invalid query strings.
      */
     public function withQuery($query)
     {
-    	return $this->configureNewInstance(['query' => $query]); 
+        return $this->configureNewInstance(['query' => $query]);
     }
 
     /**
@@ -431,12 +428,12 @@ class Uri
      *
      * An empty fragment value is equivalent to removing the fragment.
      *
-     * @param string $fragment The URI fragment to use with the new instance.
-     * @return self A new instance with the specified URI fragment.
+     * @param  string $fragment The URI fragment to use with the new instance.
+     * @return self   A new instance with the specified URI fragment.
      */
     public function withFragment($fragment)
     {
-    	return $this->configureNewInstance(['fragment' => $fragment]); 
+        return $this->configureNewInstance(['fragment' => $fragment]);
     }
 
     /**
@@ -453,7 +450,7 @@ class Uri
          'port' => $this->port,
          'user' => $this->user,
          'password' => $this->password
-        ], $configuration); 
+        ], $configuration);
 
         return new self (
          $parameters['host'],
@@ -484,19 +481,19 @@ class Uri
      */
     public function __toString()
     {
-    	$uri = $this->getAuthority();
-    	if('' !== $this->scheme){
-    		$uri = $this->scheme . '://' . $uri;
-    	}
-    	if('' !== $this->path){
-    		$uri .= $this->path;
-    	}
-    	if('' !== $this->query){
-    		$uri .= '?' . $this->query;
-    	}
-    	if('' !== $this->fragment){
-    		$uri .= '#' . $this->fragment;
-    	}
+        $uri = $this->getAuthority();
+        if ('' !== $this->scheme) {
+            $uri = $this->scheme . '://' . $uri;
+        }
+        if ('' !== $this->path) {
+            $uri .= $this->path;
+        }
+        if ('' !== $this->query) {
+            $uri .= '?' . $this->query;
+        }
+        if ('' !== $this->fragment) {
+            $uri .= '#' . $this->fragment;
+        }
 
         return $uri;
     }
