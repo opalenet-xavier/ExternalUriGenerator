@@ -1,5 +1,5 @@
 {
-    "name": "opale/externalUriGenerator",
+    "name": "opale/externalurigenerator",
     "type": "library",
     "description": "Build Uri that goes outside of your application",
     "keywords": ["uri"],
